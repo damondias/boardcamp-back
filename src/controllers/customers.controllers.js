@@ -36,4 +36,19 @@ export async function getCustomer(req, res) {
     } catch (error) {
         res.status(500).send(error.message);
     }
-  }
+}
+
+export async function putCustomer(req,res){
+    const {id} = req.params;
+    const {name, phone, cpf, birthday} = req.body;
+
+    try {
+        const existingCpf = await customersRepository.verifyCpf(cpf,id);
+        if (existingCpf.rowCount > 0) return res.sendStatus(409);
+
+        await customersRepository.updateCustomer(name, phone, cpf, birthday, id);
+        res.sendStatus(200);        
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}

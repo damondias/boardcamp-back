@@ -30,11 +30,32 @@ async function findCustomer(id){
     `, [id]);
 }
 
+async function verifyCpf(cpf,id){
+    return db.query(`
+        SELECT id 
+            FROM customers 
+            WHERE cpf=$1 AND id!=$2;
+    `, [cpf, id]);
+}
+
+async function updateCustomer(name, phone, cpf, birthday, id){
+    return db.query(`
+        UPDATE customers 
+            SET name=$1, 
+                phone=$2, 
+                cpf=$3, 
+                birthday=$4 
+            WHERE id=$5;
+  `, [name, phone, cpf, birthday, id]);
+}
+
 const customersRepository ={
     verifyGame,
     createCustomer,
     findCustomers,
-    findCustomer, 
+    findCustomer,
+    verifyCpf,
+    updateCustomer,
 }
 
 export default customersRepository;

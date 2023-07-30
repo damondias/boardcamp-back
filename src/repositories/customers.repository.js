@@ -15,9 +15,26 @@ async function createCustomer(name, phone, cpf, birthday){
     `,[name, phone, cpf, birthday]);
 }
 
+async function findCustomers(){
+    return db.query(`
+        SELECT *
+            FROM customers;
+    `);
+}
+
+async function findCustomer(id){
+    return db.query(`
+        SELECT *
+            FROM customers
+            WHERE id=$1;
+    `, [id]);
+}
+
 const customersRepository ={
     verifyGame,
     createCustomer,
+    findCustomers,
+    findCustomer, 
 }
 
 export default customersRepository;

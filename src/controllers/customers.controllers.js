@@ -13,3 +13,27 @@ export async function postCustomer(req,res){
         res.status(500).send(error.message);
     }
 }
+
+export async function getCustomers(req, res){
+
+    try {
+        const customers = await customersRepository.findCustomers();
+        res.send(customers.rows);
+
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export async function getCustomer(req, res) {
+    const { id } = req.params;
+
+    try {
+      const customer = await customersRepository.findCustomer(id);
+      if (customer.rowCount === 0) return res.sendStatus(404);
+
+      res.send(customer.rows[0]);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+  }

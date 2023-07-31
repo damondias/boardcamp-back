@@ -10,7 +10,7 @@ async function verifyGame(cpf){
 
 async function createCustomer(name, phone, cpf, birthday){
     return db.query(`
-        INSERT INTO customers (name, phone, cpf, birthday); 
+        INSERT INTO customers (name, phone, cpf, birthday) 
         VALUES ($1, $2, $3, $4);
     `,[name, phone, cpf, birthday]);
 }

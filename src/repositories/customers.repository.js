@@ -15,11 +15,12 @@ async function createCustomer(name, phone, cpf, birthday){
     `,[name, phone, cpf, birthday]);
 }
 
-async function findCustomers(){
+async function findCustomers(cpf){
     return db.query(`
         SELECT *, to_char(birthday, 'YYYY-MM-DD') AS birthday
-            FROM customers;
-    `);
+            FROM customers
+            ${cpf ? 'WHERE cpf LIKE $1' : ''};
+    `, cpf ? [`${cpf}%`] : []);
 }
 
 async function findCustomer(id){

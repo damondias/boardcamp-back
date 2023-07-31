@@ -47,13 +47,39 @@ async function findRentals(){
     `);
 }
 
+async function verifyRentalGame(id){
+    return db.query(`
+        SELECT * 
+            FROM rentals 
+            WHERE id=$1
+    `,[id]);
+}
+
+async function depositGame(today, extraFee, id){
+    return db.query(`
+        UPDATE rentals 
+            SET "returnDate"=$1, "delayFee"=$2 
+            WHERE id=$3
+    `, [today, extraFee, id])
+}
+
+async function deleteRental(id){
+    return db.query(`
+        DELETE 
+            FROM rentals 
+            WHERE id=$1
+    `, [id]);
+}
+
 const rentalsrepository ={
     verifyCustomer,
     verifyGame,
     listRentals,
     createRental,
     findRentals,
-    
+    verifyRentalGame,
+    depositGame,
+    deleteRental,
 }
 
 export default rentalsrepository;

@@ -23,3 +23,13 @@ export async function postRental(req, res){
         res.status(500).send(error.message);
     }
 }
+
+export async function getrentals(req,res){
+    try {
+        const rentals = await rentalsrepository.findRentals();
+        res.send(rentals.rows);
+                
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}

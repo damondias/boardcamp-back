@@ -35,12 +35,25 @@ async function createRental(customerId, gameId, daysRented, originalPrice){
     `, [customerId, gameId, daysRented, originalPrice]);
 }
 
+async function findRentals(){
+    return db.query(`
+        SELECT
+            rentals.*,
+            jsonb_build_object('id', customers.id, 'name', customers.name) AS customer,
+            jsonb_build_object('id', games.id, 'name', games.name) AS game
+        FROM rentals 
+        JOIN customers ON rentals."customerId" = customers.id
+        JOIN games ON rentals."gameId" = games.id;
+    `);
+}
+
 const rentalsrepository ={
     verifyCustomer,
     verifyGame,
     listRentals,
     createRental,
-
+    findRentals,
+    
 }
 
 export default rentalsrepository;

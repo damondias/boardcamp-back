@@ -10,21 +10,21 @@ async function verifyGame(cpf){
 
 async function createCustomer(name, phone, cpf, birthday){
     return db.query(`
-        INSERT INTO customers (name, phone, cpf, birthday) 
+        INSERT INTO customers (name, phone, cpf, birthday); 
         VALUES ($1, $2, $3, $4);
     `,[name, phone, cpf, birthday]);
 }
 
 async function findCustomers(){
     return db.query(`
-        SELECT *
+        SELECT *, to_char(birthday, 'YYYY-MM-DD') AS birthday
             FROM customers;
     `);
 }
 
 async function findCustomer(id){
     return db.query(`
-        SELECT *
+        SELECT *, to_char(birthday, 'YYYY-MM-DD') AS birthday
             FROM customers
             WHERE id=$1;
     `, [id]);

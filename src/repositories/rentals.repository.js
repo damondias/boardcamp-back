@@ -35,7 +35,7 @@ async function createRental(customerId, gameId, daysRented, originalPrice){
     `, [customerId, gameId, daysRented, originalPrice]);
 }
 
-async function findRentals(){
+async function findRentals(customerId, gameId){
     return db.query(`
         SELECT
             rentals.*,
@@ -43,8 +43,11 @@ async function findRentals(){
             jsonb_build_object('id', games.id, 'name', games.name) AS game
         FROM rentals 
         JOIN customers ON rentals."customerId" = customers.id
-        JOIN games ON rentals."gameId" = games.id;
-    `);
+        JOIN games ON rentals."gameId" = games.id
+        ${customerId ? 'WHERE rentals."customerId" = $1' : ''}
+        ${gameId && customerId ? 'AND rentals."gameId" = $2' : ''}
+        ${gameId && !customerId ? 'WHERE rentals."gameId" = $1' : ''}
+    `,[customerId, gameId].filter(Boolean));
 }
 
 async function verifyRentalGame(id){

@@ -16,9 +16,10 @@ export async function postGame(req, res){
 }
 
 export async function getGames(req, res){
+    const { name } = req.query; 
 
     try {
-        const games = await gamesRepository.findGames();
+        const games = await gamesRepository.findGames(name);
         res.send(games.rows);
 
     } catch (error) {

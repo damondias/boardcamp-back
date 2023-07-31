@@ -25,8 +25,10 @@ export async function postRental(req, res){
 }
 
 export async function getrentals(req,res){
+    const {customerId, gameId} = req.query;
+    
     try {
-        const rentals = await rentalsrepository.findRentals();
+        const rentals = await rentalsrepository.findRentals(customerId, gameId);
         res.send(rentals.rows);
 
     } catch (error) {

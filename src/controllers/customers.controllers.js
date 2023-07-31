@@ -15,9 +15,10 @@ export async function postCustomer(req,res){
 }
 
 export async function getCustomers(req, res){
+    const {cpf} = req.query;
 
     try {
-        const customers = await customersRepository.findCustomers();
+        const customers = await customersRepository.findCustomers(cpf);
         res.send(customers.rows);
 
     } catch (error) {

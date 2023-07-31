@@ -15,11 +15,12 @@ async function createGame(name, image, stockTotal, pricePerDay){
     `,[name, image, stockTotal, pricePerDay]);
 }
 
-async function findGames(){
+async function findGames(name){
     return db.query(`
         SELECT *
-            FROM games;
-    `);
+            FROM games
+            ${name ? `WHERE LOWER(name) LIKE $1` : ''};
+    `, name ? [`${name.toLowerCase()}%`] : []);
 }
 
 const gamesRepository ={
